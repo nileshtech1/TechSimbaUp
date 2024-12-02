@@ -8,24 +8,25 @@ import {
   ScrollView,
   Modal,
 } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import CalendarPicker from 'react-native-calendar-picker';
+import DatePicker from 'react-native-date-picker';
 import DocumentPicker from 'react-native-document-picker';
+import SelectDropDown from '../../../ReusableComponent/SelectDropDown';
+import moment from 'moment'; // Import moment for date formatting
 
 const AssignTask = ({ navigation }) => {
   const [assignee, setAssignee] = useState('');
-  const [assigneeOpen, setAssigneeOpen] = useState(false);
   const [assigneeOptions, setAssigneeOptions] = useState([
     { label: 'John Doe', value: 'John Doe' },
     { label: 'Jane Smith', value: 'Jane Smith' },
     { label: 'Alice Johnson', value: 'Alice Johnson' },
     { label: 'Bob Brown', value: 'Bob Brown' },
-
+    { label: 'Bob Brow', value: 'Bob Brow' },
+    { label: 'Bob Bro', value: 'Bob Bro' },
   ]);
 
   const [projectName, setProjectName] = useState('');
-  const [deadlineDate, setDeadlineDate] = useState('');
-  const [showCalendar, setShowCalendar] = useState(false);
+  const [deadlineDate, setDeadlineDate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [taskDescription, setTaskDescription] = useState('');
   const [remarks, setRemarks] = useState('');
   const [file, setFile] = useState(null);
@@ -53,24 +54,19 @@ const AssignTask = ({ navigation }) => {
       file,
     };
     console.log('Submitted Task Data:', taskData);
+    navigation.navigate('Task List');
     // Add further submission logic here
   };
 
   return (
-    <View>
-      <Text style={styles.label}>Assign To</Text>
-      <DropDownPicker
-        open={assigneeOpen}
-        value={assignee}
-        items={assigneeOptions}
-        setOpen={setAssigneeOpen}
-        setValue={setAssignee}
-        setItems={setAssigneeOptions}
-        searchable={true}
+    <ScrollView style={styles.container} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+      <Text style={styles.title}>Assign Task</Text>
+      <SelectDropDown
+        label="Assign To"
+        options={assigneeOptions}
+        selectedValue={assignee}
+        onSelect={setAssignee}
         placeholder="Select Assignee"
-        style={styles.dropdown}
-        containerStyle={{ marginBottom: 15 }}
-        dropDownContainerStyle={{ borderColor: '#ccc' }}
       />
 
       <Text style={styles.label}>Project Name</Text>
@@ -82,28 +78,25 @@ const AssignTask = ({ navigation }) => {
       />
 
       <Text style={styles.label}>Deadline Date</Text>
-      <TouchableOpacity style={styles.input} onPress={() => setShowCalendar(true)}>
+      <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
         <Text style={{ color: deadlineDate ? '#000' : '#aaa' }}>
-          {deadlineDate || 'Select Deadline Date'}
+          {deadlineDate ? moment(deadlineDate).format('YYYY-MM-DD') : 'Select Deadline Date'}
         </Text>
       </TouchableOpacity>
-      {showCalendar && (
-        <Modal transparent={true} animationType="slide">
-          <View style={styles.modalContainer}>
-            <View style={styles.calendarContainer}>
-              <CalendarPicker
-                onDateChange={(date) => {
-                  setDeadlineDate(date.format('YYYY-MM-DD'));
-                  setShowCalendar(false);
-                }}
-              />
-              <TouchableOpacity onPress={() => setShowCalendar(false)} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Close</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-      )}
+
+      <DatePicker
+        modal
+        open={showDatePicker}
+        date={deadlineDate || new Date()}
+        mode="date"
+        onConfirm={(date) => {
+          setDeadlineDate(date);
+          setShowDatePicker(false);
+        }}
+        onCancel={() => {
+          setShowDatePicker(false);
+        }}
+      />
 
       <Text style={styles.label}>Upload Files</Text>
       <TouchableOpacity style={styles.button} onPress={handleFilePick}>
@@ -132,7 +125,7 @@ const AssignTask = ({ navigation }) => {
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitButtonText}>Submit Task</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -140,10 +133,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-    padding: 20,
+    margin: 20,
   },
-  contentContainer: {
-    paddingBottom: 30,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   label: {
     fontSize: 16,
@@ -161,23 +157,19 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
   },
-  dropdown: {
-    borderColor: '#ccc',
-    backgroundColor: '#fff',
-  },
   textArea: {
     height: 100,
     textAlignVertical: 'top',
   },
   button: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#fff',
     padding: 12,
     borderRadius: 5,
-    alignItems: 'center',
     marginBottom: 15,
+    borderWidth: 0.2,
   },
   buttonText: {
-    color: '#fff',
+    color: '#aaa',
     fontWeight: 'bold',
   },
   fileName: {
@@ -196,27 +188,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  calendarContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-    width: '90%',
-  },
-  closeButton: {
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    color: '#007BFF',
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });
 

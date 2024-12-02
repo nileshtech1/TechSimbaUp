@@ -7,10 +7,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   View,
-  Modal,
   Button,
 } from 'react-native';
-import CalendarPicker from 'react-native-calendar-picker';
+import DatePicker from 'react-native-date-picker'; // Correct import
 import moment from 'moment';
 
 const CreateLeave = ({ navigation }) => {
@@ -18,23 +17,17 @@ const CreateLeave = ({ navigation }) => {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [description, setDescription] = useState('');
-  const [fromVisible, setFromVisible] = useState(false);
-  const [toVisible, setToVisible] = useState(false);
+  const [showFromDatePicker, setShowFromDatePicker] = useState(false); // state for from date picker visibility
+  const [showToDatePicker, setShowToDatePicker] = useState(false); // state for to date picker visibility
 
-  const openFromDatePicker = () => setFromVisible(true);
-  const openToDatePicker = () => setToVisible(true);
-
-  const closeFromDatePicker = () => setFromVisible(false);
-  const closeToDatePicker = () => setToVisible(false);
-
-  const handleFromDateSelect = (date) => {
-    setFromDate(moment(date).format('YYYY-MM-DD')); // Format date to 'YYYY-MM-DD'
-    closeFromDatePicker();
+  const handleFromDateChange = (date) => {
+    setFromDate(moment(date).format('YYYY-MM-DD'));
+    setShowFromDatePicker(false); // Hide the picker after selection
   };
 
-  const handleToDateSelect = (date) => {
-    setToDate(moment(date).format('YYYY-MM-DD')); // Format date to 'YYYY-MM-DD'
-    closeToDatePicker();
+  const handleToDateChange = (date) => {
+    setToDate(moment(date).format('YYYY-MM-DD'));
+    setShowToDatePicker(false); // Hide the picker after selection
   };
 
   const handleSubmit = () => {
@@ -57,22 +50,42 @@ const CreateLeave = ({ navigation }) => {
         />
 
         {/* From Date Field */}
-        <Text style={styles.label}>From</Text>
+        <Text style={styles.label}>From Date</Text>
         <TextInput
           value={fromDate}
           style={styles.input}
           placeholder="Select from date"
-          onFocus={openFromDatePicker}
+          onFocus={() => setShowFromDatePicker(true)} // show date picker on focus
         />
+        {showFromDatePicker && (
+          <DatePicker
+            modal
+            open={showFromDatePicker}
+            date={fromDate ? new Date(fromDate) : new Date()}
+            mode="date"
+            onConfirm={handleFromDateChange}
+            onCancel={() => setShowFromDatePicker(false)} // close date picker on cancel
+          />
+        )}
 
         {/* To Date Field */}
-        <Text style={styles.label}>To</Text>
+        <Text style={styles.label}>To Date</Text>
         <TextInput
           value={toDate}
           style={styles.input}
           placeholder="Select to date"
-          onFocus={openToDatePicker}
+          onFocus={() => setShowToDatePicker(true)} // show date picker on focus
         />
+        {showToDatePicker && (
+          <DatePicker
+            modal
+            open={showToDatePicker}
+            date={toDate ? new Date(toDate) : new Date()}
+            mode="date"
+            onConfirm={handleToDateChange}
+            onCancel={() => setShowToDatePicker(false)} // close date picker on cancel
+          />
+        )}
 
         {/* Description Field */}
         <Text style={styles.label}>Description</Text>
@@ -89,38 +102,6 @@ const CreateLeave = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <Button title="Submit" onPress={handleSubmit} />
         </View>
-
-        {/* From Date Picker Modal */}
-        <Modal visible={fromVisible} transparent animationType="slide">
-          <View style={styles.modalContainer}>
-            <View style={styles.modal}>
-              <CalendarPicker
-                onDateChange={handleFromDateSelect}
-                selectedDayColor="#007BFF"
-                selectedDayTextColor="#fff"
-              />
-              <View style={styles.buttonContainer}>
-                <Button title="Close" onPress={closeFromDatePicker} />
-              </View>
-            </View>
-          </View>
-        </Modal>
-
-        {/* To Date Picker Modal */}
-        <Modal visible={toVisible} transparent animationType="slide">
-          <View style={styles.modalContainer}>
-            <View style={styles.modal}>
-              <CalendarPicker
-                onDateChange={handleToDateSelect}
-                selectedDayColor="#007BFF"
-                selectedDayTextColor="#fff"
-              />
-              <View style={styles.buttonContainer}>
-                <Button title="Close" onPress={closeToDatePicker} />
-              </View>
-            </View>
-          </View>
-        </Modal>
       </ScrollView>
     </TouchableWithoutFeedback>
   );
@@ -156,18 +137,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 20,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modal: {
-    backgroundColor: 'white',
-    padding: 20,
-    margin: 20,
-    borderRadius: 10,
-    alignItems: 'center',
   },
 });
 
