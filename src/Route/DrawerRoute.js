@@ -9,10 +9,11 @@ import Salary from '../Component/HRM/Salary/Salary';
 import Announcement from '../Component/HRM/Announcement/Announcement';
 import Task from '../Component/HRM/Task/Task';
 import AttendanceRecord from '../Component/HRM/AttendanceRecord/AttendanceRecord';
+import Notification from '../Component/Notification/Notification';
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigator = () => {
+const DrawerNavigator = ({navigation}) => {
   const [showHRMSubmenu, setShowHRMSubmenu] = useState(false);
   const [showCRMSubmenu, setShowCRMSubmenu] = useState(false);
   const [activeItem, setActiveItem] = useState('Dashboard'); // Track active menu item
@@ -142,7 +143,7 @@ const DrawerNavigator = () => {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
-            console.log('Bell icon pressed'); // Replace this with navigation or other functionality
+           navigation.navigate('Notification') // Replace this with navigation or other functionality
           }}
           style={styles.bellIconContainer}
         >
@@ -158,6 +159,7 @@ const DrawerNavigator = () => {
       <Drawer.Screen name="Announcement" component={Announcement} />
       <Drawer.Screen name="Task" component={Task} />
       <Drawer.Screen name="Attendance Records" component={AttendanceRecord} />
+      {/* <Drawer.Screen name="Notification" component={Notification} /> */}
     </Drawer.Navigator>
   );
 };

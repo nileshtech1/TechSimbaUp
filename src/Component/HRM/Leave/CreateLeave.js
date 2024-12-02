@@ -8,6 +8,7 @@ import {
   Keyboard,
   View,
   Button,
+  TouchableOpacity,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker'; // Correct import
 import moment from 'moment';
@@ -99,9 +100,9 @@ const CreateLeave = ({ navigation }) => {
         />
 
         {/* Submit Button */}
-        <View style={styles.buttonContainer}>
-          <Button title="Submit" onPress={handleSubmit} />
-        </View>
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <Text style={styles.submitButtonText}>Submit Leave</Text>
+      </TouchableOpacity>
       </ScrollView>
     </TouchableWithoutFeedback>
   );
@@ -137,6 +138,18 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 20,
+  },
+  submitButton: {
+    backgroundColor: '#28a745',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  submitButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

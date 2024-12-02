@@ -36,10 +36,10 @@ const NewAnnouncement = ({navigation}) => {
         placeholder="Enter title"
       />
 
-      <Text style={styles.label}>Deadline Date:</Text>
+      <Text style={styles.label}>Date:</Text>
       <TouchableOpacity style={styles.dateInput} onPress={() => setShowToDatePicker(true)}>
         <Text style={{ color: deadlineDate ? '#000' : '#aaa' }}>
-          {deadlineDate ? moment(deadlineDate).format('YYYY-MM-DD') : 'Select Deadline Date'}
+          {deadlineDate ? moment(deadlineDate).format('YYYY-MM-DD') : 'Select Date'}
         </Text>
       </TouchableOpacity>
 

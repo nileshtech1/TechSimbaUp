@@ -5,15 +5,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const AnnouncementList = ({navigation}) => {
   // Static data for the announcement list
   const announcements = [
-    { id: '1', title: 'Maintenance Update', description: 'Scheduled maintenance on Dec 5th, 2024. Please expect some downtime.', color: '#A1CEFAFF', icon: 'wrench' },
-    { id: '2', title: 'New Feature Launch', description: 'Introducing new features for better user experience in the upcoming version.', color: '#A1CEFAFF', icon: 'rocket' },
-    { id: '3', title: 'System Upgrade', description: 'The system will be upgraded on Dec 12th, 2024. All services will be paused.', color: '#A1CEFAFF', icon: 'cogs' },
-    { id: '4', title: 'Security Patch', description: 'We have released a security patch to improve system stability and security.', color: '#A1CEFAFF', icon: 'shield' },
+    { id: '1', title: 'Maintenance Update', description: 'Scheduled maintenance on Dec 5th, 2024. Please expect some downtime.', color: '#FFFFFFFF', icon: 'wrench' },
+    { id: '2', title: 'New Feature Launch', description: 'Introducing new features for better user experience in the upcoming version.', color: '#FFFFFFFF', icon: 'rocket' },
+    { id: '3', title: 'System Upgrade', description: 'The system will be upgraded on Dec 12th, 2024. All services will be paused.', color: '#FFFFFFFF', icon: 'cogs' },
+    { id: '4', title: 'Security Patch', description: 'We have released a security patch to improve system stability and security.', color: '#FFFFFFFF', icon: 'shield' },
   ];
 
   // Render item for each announcement
   const renderItem = ({ item }) => (
     <View style={[styles.announcementCard, { backgroundColor: item.color }]}>
+
       <View style={styles.iconContainer}>
         <Icon name={item.icon} size={30} color="#000" />
       </View>
@@ -26,6 +27,7 @@ const AnnouncementList = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Announcement List</Text>
       <FlatList 
         data={announcements} 
         renderItem={renderItem} 
@@ -45,12 +47,12 @@ const styles = StyleSheet.create({
   announcementCard: {
     padding: 20,
     marginBottom: 15,
-    borderRadius: 12,
-    elevation: 5, 
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 3 },
+    borderRadius: 10,
+    elevation: 2, 
+    // shadowColor: '#000',
+    // shadowOpacity: 0.1,
+    // shadowRadius: 5,
+    // shadowOffset: { width: 0, height: 3 },
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -75,6 +77,12 @@ const styles = StyleSheet.create({
   announcementDescription: {
     fontSize: 14,
     color: '#000',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
   },
 });
 
