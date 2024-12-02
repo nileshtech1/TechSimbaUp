@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -87,10 +88,10 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile file('my-release-key.keystore') // Use your custom keystore
+            storePassword 'android'                 // Keystore password
+            keyAlias 'mydebug'                      // Key alias
+            keyPassword 'android'                   // Key password
         }
     }
     buildTypes {
