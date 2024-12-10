@@ -48,7 +48,7 @@ const Salary = () => {
         tabBarStyle: styles.tabBar,
       })}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Create Salary"
         component={CreateSalary}
         options={{ headerShown: false }}
@@ -57,7 +57,7 @@ const Salary = () => {
         name="Manage Salary"
         component={ManageSalary}
         options={{ headerShown: false }}
-      />
+      /> */}
        <Tab.Screen
         name="My Salary"
         component={MySalary}

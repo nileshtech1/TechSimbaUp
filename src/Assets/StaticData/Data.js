@@ -30,3 +30,12 @@ export const tasks = [
       file: 'Notes.txt',
     },
   ];
+
+  export const shortcuts = [
+    {label: 'Leave', route: 'Leave', icon: 'briefcase'},
+    {label: 'Salary', route: 'Salary', icon: 'rupee-sign'},
+    {label: 'Announcement', route: 'Announcement', icon: 'megaphone'},
+    {label: 'Notification', route: 'Notification', icon: 'bell'},
+    {label: 'Profile', route: 'Profile', icon: 'user'},
+    {label: 'Settings', route: 'Settings', icon: 'settings'},
+  ];

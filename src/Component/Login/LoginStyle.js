@@ -15,7 +15,7 @@ export default LoginStyle = StyleSheet.create({
       width: 450,
       height: 450,
       borderRadius: 225,
-      backgroundColor: '#d4d4ff',
+      backgroundColor: Colors.theme_background,
     },
     backgroundCircle1: {
       position: 'absolute',
@@ -24,7 +24,7 @@ export default LoginStyle = StyleSheet.create({
       width: 300,
       height: 300,
       borderRadius: 140,
-      backgroundColor: '#d4d4ff',
+      backgroundColor: Colors.theme_background,
     },
     backgroundCircle2: {
       position: 'absolute',
@@ -33,7 +33,7 @@ export default LoginStyle = StyleSheet.create({
       width: 400,
       height: 400,
       borderRadius: 200,
-      backgroundColor: '#d4d4ff',
+      backgroundColor: Colors.theme_background,
     },
     backgroundCircle3: {
       position: 'absolute',
@@ -42,7 +42,7 @@ export default LoginStyle = StyleSheet.create({
       width: 280,
       height: 280,
       borderRadius: 140,
-      backgroundColor: '#d4d4ff',
+      backgroundColor: Colors.theme_background,
     },
     imageCircleContainer: {
       position: 'absolute',

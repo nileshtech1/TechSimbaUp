@@ -1,45 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Make sure to install this package
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
+import { GetLeaveApi } from '../../../Redux/API/GetLeaveApi';
 
 const ManageLeave = ({ navigation }) => {
-  const [leaves, setLeaves] = useState([
-    {
-      id: '1',
-      name: 'John Doe',
-      subject: 'Sick Leave',
-      from: '2024-11-01',
-      to: '2024-11-03',
-      approvedBy: 'Manager',
-      status: 'Approved',
-    },
-    {
-      id: '2',
-      name: 'Adam Smith',
-      subject: 'Vacation Leave',
-      from: '2024-12-10',
-      to: '2024-12-15',
-      approvedBy: 'Team-Leader',
-      status: 'Pending',
-    },
-    {
-      id: '3',
-      name: 'Doe Smith',
-      subject: 'Personal Leave',
-      from: '2024-11-20',
-      to: '2024-11-22',
-      approvedBy: 'Manager',
-      status: 'Rejected',
-    },
-  ]);
+  const dispatch = useDispatch();
+  const { GetLeaveData } = useSelector((state) => state.GetLeave);
+
+  useEffect(() => {
+    dispatch(GetLeaveApi());
+  }, [dispatch]);
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Approved':
+      case 'approved':
         return '#28A745'; // Green
-      case 'Pending':
+      case 'pending':
         return '#FFC107'; // Yellow
-      case 'Rejected':
+      case 'rejected':
         return '#DC3545'; // Red
       default:
         return '#6c757d'; // Default gray color
@@ -49,27 +28,26 @@ const ManageLeave = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <View style={styles.nameContainer}>
-        <Text style={styles.leaveTitle}>{item.name}</Text>
+        <Text style={styles.leaveTitle}>{item.user?.name || 'N/A'}</Text>
         <View style={styles.iconContainer}>
           <TouchableOpacity
             style={styles.detailsButton}
-            onPress={() => navigation.navigate('LeaveDetails', { leaveId: item.id })}
+            onPress={() => navigation.navigate('My Leave')}
           >
             <Icon name="eye" size={18} color="#fff" />
           </TouchableOpacity>
-
           <TouchableOpacity
             style={styles.editButton}
-            onPress={() => navigation.navigate('EditLeave', { leaveId: item.id })}
+            onPress={() => navigation.navigate('Edit Leave')}
           >
             <Icon name="edit" size={18} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
 
-      <Text style={styles.leaveDates}>{`From: ${item.from} To: ${item.to}`}</Text>
-      <Text style={styles.leaveApprovedBy}>{`Approved By: ${item.approvedBy || 'N/A'}`}</Text>
-
+      <Text style={styles.leaveSubject}>{item.subject || 'No Subject'}</Text>
+      <Text style={styles.leaveDates}>{`From: ${item.start_date || 'N/A'} To: ${item.end_date || 'N/A'}`}</Text>
+      <Text style={styles.leaveApprovedBy}>{`Approved By: ${item.approved_by || 'N/A'}`}</Text>
       <Text style={[styles.leaveStatus, { color: getStatusColor(item.status) }]}>
         {`Status: ${item.status}`}
       </Text>
@@ -80,9 +58,9 @@ const ManageLeave = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.header}>Manage Leave</Text>
       <FlatList
-        data={leaves}
+        data={GetLeaveData?.leavedata ? [GetLeaveData.leavedata] : []}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       />
@@ -143,6 +121,11 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     marginLeft: 10,
+  },
+  leaveSubject: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 5,
   },
   leaveDates: {
     fontSize: 14,

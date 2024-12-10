@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import VectorIcon from '../../../Icon/VectorIcon';
-import { useNavigation } from '@react-navigation/native';
 import ManageLeave from './ManageLeave';
 import CreateLeave from './CreateLeave';
 import AllLeave from './AllLeave';
@@ -10,9 +9,9 @@ import AllLeave from './AllLeave';
 const Tab = createBottomTabNavigator();
 
 const Leave = () => {
-  const navigation = useNavigation()
   return (
     <Tab.Navigator
+      initialRouteName="Manage Leave" // Set the default route
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -20,7 +19,7 @@ const Leave = () => {
 
           // Assign icons based on route names
           switch (route.name) {
-            case 'Create Leave':
+            case 'Apply Leave':
               iconName = 'new-message'; // Change to your preferred icon
               iconLibrary = 'Entypo'; // Specify the library for this icon
               break;
@@ -49,7 +48,7 @@ const Leave = () => {
       })}
     >
       <Tab.Screen
-        name="Create Leave"
+        name="Apply Leave"
         component={CreateLeave}
         options={{ headerShown: false }}
       />
@@ -58,11 +57,11 @@ const Leave = () => {
         component={ManageLeave}
         options={{ headerShown: false }}
       />
-       <Tab.Screen
+      {/* <Tab.Screen
         name="All Leave"
         component={AllLeave}
         options={{ headerShown: false }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };
