@@ -2,12 +2,22 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
+import SelectDropDown from '../../../ReusableComponent/SelectDropDown';
 
 const NewAnnouncement = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [deadlineDate, setDeadlineDate] = useState('');
   const [showToDatePicker, setShowToDatePicker] = useState(false);
+  const [Employee, setEmployee] = useState([]);
+  const [assigneeOptions, setAssigneeOptions] = useState([
+    { label: 'John Doe', value: 'John Doe' },
+    { label: 'Jane Smith', value: 'Jane Smith' },
+    { label: 'Alice Johnson', value: 'Alice Johnson' },
+    { label: 'Bob Brown', value: 'Bob Brown' },
+    { label: 'Bob Brow', value: 'Bob Brow' },
+    { label: 'Bob Bro', value: 'Bob Bro' },
+  ]);
 
   const handleToDateChange = (date) => {
     setDeadlineDate(moment(date).format('YYYY-MM-DD'));
@@ -21,14 +31,24 @@ const NewAnnouncement = ({navigation}) => {
       description,
       deadlineDate
     }
-    console.log('Data:', Data);
+    // console.log('Data:', Data);
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Create Announcement</Text>
+      <SelectDropDown
+         label="Select Employee"
+         options={assigneeOptions}
+         selectedValue={Employee}
+         onSelect={setEmployee}
+         placeholder="Select Employee"
+        isMultipleSelect={true}
+        isRequired={true}
+      />
 
-      <Text style={styles.label}>Title:</Text>
+
+      <Text style={styles.label}>Title</Text>
       <TextInput
         style={styles.input}
         value={title}
@@ -36,10 +56,10 @@ const NewAnnouncement = ({navigation}) => {
         placeholder="Enter title"
       />
 
-      <Text style={styles.label}>Deadline Date:</Text>
+      <Text style={styles.label}>Date</Text>
       <TouchableOpacity style={styles.dateInput} onPress={() => setShowToDatePicker(true)}>
         <Text style={{ color: deadlineDate ? '#000' : '#aaa' }}>
-          {deadlineDate ? moment(deadlineDate).format('YYYY-MM-DD') : 'Select Deadline Date'}
+          {deadlineDate ? moment(deadlineDate).format('YYYY-MM-DD') : 'Select Date'}
         </Text>
       </TouchableOpacity>
 
@@ -56,7 +76,7 @@ const NewAnnouncement = ({navigation}) => {
       )}
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Description:</Text>
+        <Text style={styles.label}>Description</Text>
         <TextInput
           style={[styles.input, styles.textarea]}
           value={description}

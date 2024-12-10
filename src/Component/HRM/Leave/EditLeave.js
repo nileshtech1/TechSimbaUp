@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -12,11 +12,12 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-date-picker'; // Correct import
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PostLeaveApi } from '../../../Redux/API/PostLeaveApi';
 import { GetLeaveApi } from '../../../Redux/API/GetLeaveApi';
+import { EditLeaveApi } from '../../../Redux/API/EditLeaveApi';
 
-const CreateLeave = ({ navigation }) => {
+const EditLeave = ({ navigation }) => {
   const [subject, setSubject] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
@@ -24,6 +25,21 @@ const CreateLeave = ({ navigation }) => {
   const [showFromDatePicker, setShowFromDatePicker] = useState(false); // state for from date picker visibility
   const [showToDatePicker, setShowToDatePicker] = useState(false); // state for to date picker visibility
   const dispatch = useDispatch();
+  const { GetLeaveData } = useSelector((state) => state.GetLeave);
+  const leaveData = GetLeaveData?.leavedata;
+
+  useEffect(() => {
+    if (GetLeaveData.status === true) {
+      setSubject(leaveData?.subject);
+      setFromDate(leaveData?.start_date);
+      setToDate(leaveData?.end_date);
+  
+      // Remove HTML tags from description
+      const cleanDescription = leaveData?.description?.replace(/<\/?[^>]+(>|$)/g, "") || "";
+      setDescription(cleanDescription);
+    }
+  }, [GetLeaveData]);
+  
 
   const handleFromDateChange = (date) => {
     setFromDate(moment(date).format('YYYY-MM-DD'));
@@ -37,7 +53,7 @@ const CreateLeave = ({ navigation }) => {
 
   const handleSubmit = () => {
     if (!fromDate || !toDate || !subject) {
-      alert('Please fill all the required fields (from date, to date, and subject).');
+      alert("",'Please fill all the required fields');
       return;
     }
   
@@ -49,9 +65,9 @@ const CreateLeave = ({ navigation }) => {
 
     };
   
-    dispatch(PostLeaveApi(payload))
+    dispatch(EditLeaveApi(payload))
       .then((response) => {
-        console.log(response.payload.status, "response leave api ");
+        console.log(response.payload.status, "response Edit leave api ");
         // Handle success
         if (response.payload.status == true) {
           alert(response.payload.message);
@@ -73,7 +89,7 @@ const CreateLeave = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Apply Leave</Text>
+        <Text style={styles.title}>Edit Leave</Text>
 
         {/* Subject Field */}
         <Text style={styles.label}>Subject</Text>
@@ -187,4 +203,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateLeave;
+export default EditLeave;

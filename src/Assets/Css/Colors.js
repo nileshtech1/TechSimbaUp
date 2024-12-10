@@ -1,6 +1,8 @@
 export const Colors = {
-    theme_background: '#00a1b1',
-    theme_background_green: '#7986fa',
+    theme_background: '#d4d4ff',
+    theme_background_dark: '#553099C5',
+    Icon_theme_background_dark: '#3C226DE1',
+
     second_alice_Blue_color: '#f1f5ff',
     text_color: '#465467',
     bg_screen: '#fbfbfb', //Lotion

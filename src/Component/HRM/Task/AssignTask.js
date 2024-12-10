@@ -14,7 +14,7 @@ import SelectDropDown from '../../../ReusableComponent/SelectDropDown';
 import moment from 'moment'; // Import moment for date formatting
 
 const AssignTask = ({ navigation }) => {
-  const [assignee, setAssignee] = useState('');
+  const [assignee, setAssignee] = useState([]);
   const [assigneeOptions, setAssigneeOptions] = useState([
     { label: 'John Doe', value: 'John Doe' },
     { label: 'Jane Smith', value: 'Jane Smith' },
@@ -67,6 +67,7 @@ const AssignTask = ({ navigation }) => {
         selectedValue={assignee}
         onSelect={setAssignee}
         placeholder="Select Assignee"
+        isMultipleSelect={false}
       />
 
       <Text style={styles.label}>Project Name</Text>
