@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -15,7 +15,6 @@ import UserDetails from './UserDetails';
 import JobDetails from './JobDetails';
 import BankDetails from './BankDetails';
 import Documents from './Documents';
-import Feather from 'react-native-vector-icons/Feather';
 import Colors from '../../../Assets/Css/Colors';
 import VectorIcon from '../../../Icon/VectorIcon';
 import { useDispatch, useSelector } from 'react-redux';

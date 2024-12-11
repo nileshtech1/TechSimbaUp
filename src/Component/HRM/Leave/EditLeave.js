@@ -6,18 +6,15 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard,
-  View,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker'; // Correct import
 import moment from 'moment';
-import { useDispatch, useSelector } from 'react-redux';
-import { PostLeaveApi } from '../../../Redux/API/PostLeaveApi';
+import { useDispatch } from 'react-redux';
 import { GetLeaveApi } from '../../../Redux/API/GetLeaveApi';
 import { EditLeaveApi } from '../../../Redux/API/EditLeaveApi';
 
-const EditLeave = ({ navigation }) => {
+const EditLeave = ({ route, navigation }) => {
   const [subject, setSubject] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
@@ -25,7 +22,7 @@ const EditLeave = ({ navigation }) => {
   const [showFromDatePicker, setShowFromDatePicker] = useState(false); // state for from date picker visibility
   const [showToDatePicker, setShowToDatePicker] = useState(false); // state for to date picker visibility
   const dispatch = useDispatch();
-  const { GetLeaveData } = useSelector((state) => state.GetLeave);
+  const { GetLeaveData } = route.params;
   const leaveData = GetLeaveData?.leavedata;
 
   useEffect(() => {
@@ -62,7 +59,6 @@ const EditLeave = ({ navigation }) => {
       start_date : fromDate,
       end_date : toDate,
       description : description, 
-
     };
   
     dispatch(EditLeaveApi(payload))
@@ -118,7 +114,6 @@ const EditLeave = ({ navigation }) => {
             onCancel={() => setShowFromDatePicker(false)} // close date picker on cancel
           />
         )}
-
         {/* To Date Field */}
         <Text style={styles.label}>To Date</Text>
         <TextInput

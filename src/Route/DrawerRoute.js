@@ -12,6 +12,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Home from '../Component/Home/Home';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
+import Colors from '../Assets/Css/Colors';
 
 const Drawer = createDrawerNavigator();
 
@@ -19,6 +20,8 @@ const DrawerNavigator = ({route, navigation }) => {
   const [showHRMSubmenu, setShowHRMSubmenu] = useState(false);
   const [showCRMSubmenu, setShowCRMSubmenu] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible1, setModalVisible1] = useState(false); // Modal visibility state
+
   const [activeItem, setActiveItem] = useState('Home'); // Track active menu itemz
   const [sideBarContent, setSideBarContent] = useState([ 'Leave', 'Salary','Announcement'])
   const { ProfileData } = useSelector((state) => state.ShowProfile);
@@ -54,6 +57,7 @@ const DrawerNavigator = ({route, navigation }) => {
     GoogleSignin.signOut();
     navigation.navigate('Login')
     setModalVisible(false);
+    setModalVisible1(false);
   };
 
   const CustomDrawerContent = ({ navigation }) => (
@@ -199,10 +203,35 @@ const DrawerNavigator = ({route, navigation }) => {
               <VectorIcon icon="FontAwesome" name="user" size={22} color="#000" />
               <Text style={styles.modalText}>Profile</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleLogoutClick} style={styles.modalItem}>
+            <TouchableOpacity onPress={()=> {setModalVisible1(true); setModalVisible(false)}} style={styles.modalItem}>
               <VectorIcon icon="FontAwesome" name="sign-out" size={22} color="#000" />
               <Text style={styles.modalText}>Logout</Text>
             </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        transparent={true}
+        visible={modalVisible1}
+        animationType="slide"
+        onRequestClose={() => setModalVisible1(false)}>
+        <View style={styles.modalOverlayLog}>
+          <View style={styles.modalContentLog}>
+            <Text style={styles.modalTextLog}>
+              Are you sure you want to logout?
+            </Text>
+            <View style={styles.modalActionsLog}>
+              <TouchableOpacity
+                style={[styles.modalButtonLog, styles.cancelButtonLog]}
+                onPress={() => setModalVisible1(false)}>
+                <Text style={styles.buttonTextLog}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButtonLog, styles.confirmButtonLog]}
+                onPress={handleLogoutClick}>
+                <Text style={styles.buttonTextLog}>Yes</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -359,6 +388,48 @@ const styles = StyleSheet.create({
     top: 0,
     right: 10,
     padding: 10,
+  },
+
+
+  modalOverlayLog: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContentLog: {
+    width: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  modalTextLog: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  modalActionsLog: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  modalButtonLog: {
+    flex: 1,
+    margin: 5,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  cancelButtonLog: {
+    backgroundColor: Colors.begonia_color,
+  },
+  confirmButtonLog: {
+    backgroundColor: Colors.theme_background_dark,
+  },
+  buttonTextLog: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
 

@@ -59,6 +59,7 @@ const Documents = () => {
       <FlatList
         data={staticDocuments}
         keyExtractor={item => item.id}
+        scrollEnabled={false}
         renderItem={renderDocumentItem}
         contentContainerStyle={styles.documentList}
       />
